@@ -4,5 +4,7 @@
 - [ ] Downloading video
     - [ ] m3u8 Downloader
     - [ ] ffmpeg concat
-- [ ] IA S3 Upload
+- [ ] CLI Tools
+    - [ ] Download
+    - [ ] IA S3 Upload
 - [ ] Login for higher quality
