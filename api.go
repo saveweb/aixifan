@@ -8,7 +8,7 @@ import (
 )
 
 // dougaId: int-string
-func requestVideoInfo(client *http.Client, dougaId string) ([]byte, error) {
+func requestDouga(client *http.Client, dougaId string) ([]byte, error) {
 	if strings.Contains(dougaId, "ac") {
 		return nil, errors.New("dougaId should not contain 'ac'")
 	}
@@ -29,8 +29,8 @@ func requestVideoInfo(client *http.Client, dougaId string) ([]byte, error) {
 	return body, nil
 }
 
-func GetVideoInfo(client *http.Client, dougaId string) (string, error) {
-	body, err := requestVideoInfo(client, dougaId)
+func GetDouga(client *http.Client, dougaId string) (string, error) {
+	body, err := requestDouga(client, dougaId)
 	if err != nil {
 		return "", err
 	}

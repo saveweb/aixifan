@@ -3,15 +3,16 @@ package aixifan
 import (
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/tidwall/gjson"
 )
 
-func Test_requestVideoInfo(t *testing.T) {
+func Test_requestDouga(t *testing.T) {
 	client := &http.Client{Timeout: 10 * time.Second}
-	body, err := requestVideoInfo(client, "46638469")
+	body, err := requestDouga(client, "41")
 	if err != nil {
 		t.Fatal(err)
 		return
@@ -22,9 +23,37 @@ func Test_requestVideoInfo(t *testing.T) {
 		return
 	}
 	t.Log(json)
-	os.WriteFile("test/outcome/requestVideoInfo.json", []byte(json), 0644)
+	os.WriteFile("test/outcome/Douga.json", []byte(json), 0644)
 
-	if gjson.Get(json, "title").String() != "以军杀向叙利亚首都。别慌，只是想谈笔买卖【岩论469期】" {
+	if gjson.Get(json, "title").String() != "Nihilum公会全1-球FD伊利丹视频" {
 		t.Fatal("title not match")
+	}
+}
+
+func Test_getDougaMultiP(t *testing.T) {
+	client := &http.Client{Timeout: 10 * time.Second}
+	json, err := GetDouga(client, "32749_1")
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	os.WriteFile("test/outcome/DougaMultiP_1.json", []byte(json), 0644)
+
+	if !strings.Contains(gjson.Get(json, "title").String(), "东方伪装天") {
+		t.Fatal("title not match")
+	}
+	if gjson.Get(json, "currentVideoId").Int() != 659501 {
+		t.Fatal("currentVideoId p1 not match")
+	}
+
+	json, err = GetDouga(client, "32749_2")
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	os.WriteFile("test/outcome/DougaMultiP_2.json", []byte(json), 0644)
+	if gjson.Get(json, "currentVideoId").Int() != 659502 {
+		t.Fatal("currentVideoId p2 not match")
+		return
 	}
 }
