@@ -1,4 +1,4 @@
-package aixifan
+package extractor
 
 import (
 	"os"
@@ -8,19 +8,21 @@ import (
 )
 
 func Test_html2json(t *testing.T) {
-	raw, err := os.ReadFile("test/html2json.html")
+	raw, err := os.ReadFile("test_html2json.html")
 	if err != nil {
+		// print pwd
+		t.Fatal(os.Getwd())
 		t.Fatal(err)
 		return
 	}
-	_json, err := html2json(raw)
+	_json, err := Html2json(raw)
 	if err != nil {
 		t.Fatal(err)
 		return
 	}
 	t.Log(_json)
 
-	err = os.WriteFile("test/html2json.json", []byte(_json), 0644)
+	err = os.WriteFile("test_html2json.json", []byte(_json), 0644)
 	if err != nil {
 		t.Fatal(err)
 		return

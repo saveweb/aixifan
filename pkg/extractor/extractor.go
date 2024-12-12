@@ -1,4 +1,4 @@
-package aixifan
+package extractor
 
 import (
 	"bytes"
@@ -41,7 +41,7 @@ func extractJsonFromHtml(_html string) (string, error) {
 	return "", errors.New("json not found")
 }
 
-func html2json(body []byte) (string, error) {
+func Html2json(body []byte) (string, error) {
 	// trim the json body
 	// {...}/*<!-- fetch-stream -->*/
 	var body_trimed = body

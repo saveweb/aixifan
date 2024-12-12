@@ -1,4 +1,4 @@
-package aixifan
+package api
 
 import (
 	"net/http"
@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/saveweb/aixifan/pkg/extractor"
 	"github.com/tidwall/gjson"
 )
 
@@ -17,7 +18,7 @@ func Test_requestDouga(t *testing.T) {
 		t.Fatal(err)
 		return
 	}
-	json, err := html2json(body)
+	json, err := extractor.Html2json(body)
 	if err != nil {
 		t.Fatal(err)
 		return
@@ -37,7 +38,7 @@ func Test_getDougaMultiP(t *testing.T) {
 		t.Fatal(err)
 		return
 	}
-	os.WriteFile("test/outcome/DougaMultiP_1.json", []byte(json), 0644)
+	os.WriteFile("testoutcome_DougaMultiP_1.json", []byte(json), 0644)
 
 	if !strings.Contains(gjson.Get(json, "title").String(), "东方伪装天") {
 		t.Fatal("title not match")
@@ -51,7 +52,7 @@ func Test_getDougaMultiP(t *testing.T) {
 		t.Fatal(err)
 		return
 	}
-	os.WriteFile("test/outcome/DougaMultiP_2.json", []byte(json), 0644)
+	os.WriteFile("testoutcome_DougaMultiP_2.json", []byte(json), 0644)
 	if gjson.Get(json, "currentVideoId").Int() != 659502 {
 		t.Fatal("currentVideoId p2 not match")
 		return

@@ -1,10 +1,12 @@
-package aixifan
+package api
 
 import (
 	"errors"
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/saveweb/aixifan/pkg/extractor"
 )
 
 // dougaId: int-string
@@ -34,5 +36,5 @@ func GetDouga(client *http.Client, dougaId string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return html2json(body)
+	return extractor.Html2json(body)
 }
