@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -56,5 +57,17 @@ func Test_getDougaMultiP(t *testing.T) {
 	if gjson.Get(json, "currentVideoId").Int() != 659502 {
 		t.Fatal("currentVideoId p2 not match")
 		return
+	}
+}
+
+func Test_GetDougaAll(t *testing.T) {
+	client := &http.Client{Timeout: 10 * time.Second}
+	parts, err := GetDougaAll(client, "32749")
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	for i, json := range parts {
+		os.WriteFile("testoutcome_DougaAll_"+fmt.Sprint(i+1)+".json", []byte(json), 0644)
 	}
 }
