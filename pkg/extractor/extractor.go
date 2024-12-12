@@ -67,3 +67,22 @@ func Html2json(body []byte) (string, error) {
 
 	return json, nil
 }
+
+// part: video info json
+func GetKsPlayJson(part string) (string, error) {
+	result := gjson.Get(part, "currentVideoInfo.ksPlayJson")
+
+	if !result.Exists() {
+		return "", fmt.Errorf("ksPlayJson not found")
+	}
+	if result.Type != gjson.String {
+		return "", fmt.Errorf("ksPlayJson is not a string")
+	}
+
+	ksPlayJson := result.String()
+	if !gjson.Valid(ksPlayJson) {
+		return "", fmt.Errorf("ksPlayJson is not a valid json")
+	}
+
+	return ksPlayJson, nil
+}

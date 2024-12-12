@@ -10,19 +10,17 @@ import (
 func Test_html2json(t *testing.T) {
 	raw, err := os.ReadFile("test_html2json.html")
 	if err != nil {
-		// print pwd
-		t.Fatal(os.Getwd())
 		t.Fatal(err)
 		return
 	}
-	_json, err := Html2json(raw)
+	json, err := Html2json(raw)
 	if err != nil {
 		t.Fatal(err)
 		return
 	}
-	t.Log(_json)
+	t.Log(json)
 
-	err = os.WriteFile("test_html2json.json", []byte(_json), 0644)
+	err = os.WriteFile("test_html2json.json", []byte(json), 0644)
 	if err != nil {
 		t.Fatal(err)
 		return
@@ -34,4 +32,27 @@ func Test_empty_json(t *testing.T) {
 	if gjson.Valid("") {
 		t.Fatal("empty json is not valid")
 	}
+}
+
+func Test_GetKsPlayJson(t *testing.T) {
+	wantKsPlayJSON, err := os.ReadFile("test_ksPlayJson.json")
+	raw, err := os.ReadFile("test_html2json.html")
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	json, err := Html2json(raw)
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	ksPlayJson, err := GetKsPlayJson(json)
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	if string(wantKsPlayJSON) != ksPlayJson {
+		t.Fatal("ksPlayJson not match")
+	}
+
 }
