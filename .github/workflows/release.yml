@@ -24,6 +24,9 @@ jobs:
     - uses: actions/checkout@v4
     - uses: wangyoucao577/go-release-action@v1
       with:
+        ldflags: -extldflags=-static -s -w
+        executable_compression: upx
+        compress_assets: OFF
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
