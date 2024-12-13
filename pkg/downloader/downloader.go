@@ -11,6 +11,7 @@ import (
 	"github.com/canhlinh/hlsdl"
 	"github.com/saveweb/aixifan/pkg/api"
 	"github.com/saveweb/aixifan/pkg/extractor"
+	"github.com/saveweb/aixifan/pkg/ffmpeg"
 )
 
 var headers = map[string]string{
@@ -65,15 +66,35 @@ func DownloadVideo(dougaDir, acid, part string) error {
 		return fmt.Errorf("m3u8s is empty")
 	}
 
+	qualityLabels := make([]string, len(m3u8s))
+	for i, m3u8 := range m3u8s {
+		qualityLabels[i] = m3u8.QualityLabel
+	}
+	slog.Info("Found m3u8s", "count", len(m3u8s), "QualityLabels", qualityLabels)
 	m3u8 := m3u8s[0] // assume the first one is the best
+	slog.Info("Selected", "QualityLabel", m3u8.QualityLabel)
 	hlsDL := hlsdl.New(m3u8.Url, headers, dougaDir, "ac"+acid+".ts", 3, true)
 
-	filepath, err := hlsDL.Download()
+	tsFilepath, err := hlsDL.Download()
 	if err != nil {
 		return err
 	}
 
-	slog.Info("Downloaded", "filepath", filepath)
+	slog.Info("Downloaded", "tsFilepath", tsFilepath)
+
+	mp4Filepath, err := ffmpeg.TS2MP4(tsFilepath)
+	if err != nil {
+		slog.Error("TS2MP4", "err", err)
+		return err
+	}
+	slog.Info("Converted", "mp4Filepath", mp4Filepath)
+
+	if err := os.Remove(tsFilepath); err != nil {
+		slog.Error("Remove tsFilepath", "err", err)
+		return err
+	}
+	slog.Info("Removed", "tsFilepath", tsFilepath)
+
 	return nil
 }
 
@@ -82,7 +103,6 @@ func Download(downloadsHomeDir string, dougaId string) error {
 		return fmt.Errorf("invalid dougaId")
 	}
 
-	dougaDir := path.Join(downloadsHomeDir, dougaId)
 	client := &http.Client{Timeout: 15 * time.Second}
 
 	parts, err := api.GetDougaAll(client, dougaId)
@@ -93,6 +113,7 @@ func Download(downloadsHomeDir string, dougaId string) error {
 		return fmt.Errorf("parts is empty")
 	}
 
+	dougaDir := path.Join(downloadsHomeDir, dougaId)
 	if err := os.MkdirAll(dougaDir, 0755); err != nil {
 		return err
 	}
