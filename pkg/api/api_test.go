@@ -12,8 +12,9 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+var client = &http.Client{Timeout: 10 * time.Second}
+
 func Test_requestDouga(t *testing.T) {
-	client := &http.Client{Timeout: 10 * time.Second}
 	body, err := requestDouga(client, "41")
 	if err != nil {
 		t.Fatal(err)
@@ -33,7 +34,6 @@ func Test_requestDouga(t *testing.T) {
 }
 
 func Test_getDougaMultiP(t *testing.T) {
-	client := &http.Client{Timeout: 10 * time.Second}
 	json, err := GetDouga(client, "32749_1")
 	if err != nil {
 		t.Fatal(err)
@@ -61,7 +61,6 @@ func Test_getDougaMultiP(t *testing.T) {
 }
 
 func Test_GetDougaAll(t *testing.T) {
-	client := &http.Client{Timeout: 10 * time.Second}
 	parts, err := GetDougaAll(client, "32749")
 	if err != nil {
 		t.Fatal(err)

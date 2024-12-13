@@ -100,7 +100,7 @@ func DownloadVideo(dougaDir, acid, part string) error {
 	slog.Info("Found m3u8s", "count", len(m3u8s), "QualityLabels", qualityLabels)
 	m3u8 := m3u8s[0] // assume the first one is the best
 	slog.Info("Selected", "QualityLabel", m3u8.QualityLabel)
-	hlsDL := hlsdl.New(m3u8.Url, headers, dougaDir, "ac"+acid+".ts", 3, true)
+	hlsDL := hlsdl.New(m3u8.Url, headers, dougaDir, "ac"+acid+".ts", 4, true)
 
 	tsFilepath, err := hlsDL.Download()
 	if err != nil {

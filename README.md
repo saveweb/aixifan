@@ -10,7 +10,7 @@
 - [ ] Uploader
     - [ ] mapping IA S3 protocol
     - [ ] modify metadata
-- [ ] Version check
+- [x] Version check
 - [ ] CLI
     - [X] `aixifan_config.json` Config
         - [x] "downloads_home_dir"
