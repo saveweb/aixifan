@@ -32,7 +32,7 @@ func NewConfig() *Config {
 }
 
 func (config *Config) Save() error {
-	json_data, err := json.Marshal(config)
+	json_data, err := json.MarshalIndent(config, "", "    ")
 	if err != nil {
 		return err
 	}

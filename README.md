@@ -2,11 +2,15 @@
 
 - [x] Extracting video info from html
     - [x] MultiPart
-- [x] Downloading video
+- [x] Downloader
+    - [x] Saving video info
     - [x] m3u8 Downloader
-    - [ ] ffmpeg concat
+    - [ ] ffmpeg convert ts to mp4 (?)
 - [ ] CLI Tools
     - [X] `aixifan_config.json` Config
+        - [x] "downloads_home_dir"
+        - [ ] "ia_key_file"
+        - [ ] "cookies_file"
     - [x] Download
     - [ ] IA S3 Upload
 - [ ] Login/Cookies for higher quality
