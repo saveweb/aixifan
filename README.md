@@ -6,7 +6,10 @@
     - [x] Saving video info
     - [x] m3u8 Downloader
     - [ ] ffmpeg convert ts to mp4 (?)
-- [ ] CLI Tools
+- [ ] Uploader
+    - [ ] mapping IA S3 protocol
+    - [ ] modify metadata
+- [ ] CLI
     - [X] `aixifan_config.json` Config
         - [x] "downloads_home_dir"
         - [ ] "ia_key_file"
