@@ -2,11 +2,13 @@
 
 - [x] Extracting video info from html
     - [x] MultiPart
-- [ ] Downloading video
-    - [ ] m3u8 Downloader
+- [x] Downloading video
+    - [x] m3u8 Downloader
     - [ ] ffmpeg concat
 - [ ] CLI Tools
     - [X] `aixifan_config.json` Config
-    - [ ] Download
+    - [x] Download
     - [ ] IA S3 Upload
-- [ ] Login for higher quality
+- [ ] Login/Cookies for higher quality
+    - [ ] Login/Cookies
+    - [ ] Remove sensitive info from saved json info

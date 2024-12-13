@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"strings"
 
@@ -35,6 +36,7 @@ func requestDouga(client *http.Client, acId string) ([]byte, error) {
 
 // acId: 1234_1
 func GetDouga(client *http.Client, acId string) (string, error) {
+	slog.Info("GetDouga", "acId", acId)
 	body, err := requestDouga(client, acId)
 	if err != nil {
 		return "", err
@@ -44,6 +46,7 @@ func GetDouga(client *http.Client, acId string) (string, error) {
 
 // dougaId: 1234
 func GetDougaAll(client *http.Client, dougaId string) ([]string, error) {
+	slog.Info("GetDougaAll", "dougaId", dougaId)
 	var parts []string
 	if strings.Contains(dougaId, "_") {
 		return nil, errors.New("dougaId should not contain '_'")

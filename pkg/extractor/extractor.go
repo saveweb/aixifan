@@ -68,6 +68,30 @@ func Html2json(body []byte) (string, error) {
 	return json, nil
 }
 
+func GetTitles(part string) (dougaTitle string, partTitle string, err error) {
+	// douga title
+	result := gjson.Get(part, "title")
+	if !result.Exists() {
+		return "", "", fmt.Errorf("title not found")
+	}
+	if result.Type != gjson.String {
+		return "", "", fmt.Errorf("title is not a string")
+	}
+	dougaTitle = result.String()
+
+	// part title
+	result = gjson.Get(part, "currentVideoInfo.title")
+	if !result.Exists() {
+		return "", "", fmt.Errorf("title not found")
+	}
+	if result.Type != gjson.String {
+		return "", "", fmt.Errorf("title is not a string")
+	}
+	partTitle = result.String()
+
+	return dougaTitle, partTitle, nil
+}
+
 // part: video info json
 func GetKsPlayJson(part string) (string, error) {
 	result := gjson.Get(part, "currentVideoInfo.ksPlayJson")
@@ -85,4 +109,58 @@ func GetKsPlayJson(part string) (string, error) {
 	}
 
 	return ksPlayJson, nil
+}
+
+type M3u8 struct {
+	Url          string
+	QualityLabel string
+}
+
+func GetM3U8s(ksPlayJson string) (m3u8s []M3u8, err error) {
+	urls, err := GetM3u8Urls(ksPlayJson)
+	if err != nil {
+		return
+	}
+	qulityLabels, err := GetM3u8QualityLabels(ksPlayJson)
+	if err != nil {
+		return
+	}
+	for i, url := range urls {
+		m3u8s = append(m3u8s, M3u8{Url: url, QualityLabel: qulityLabels[i]})
+	}
+	return
+}
+
+func GetM3u8Urls(ksPlayJson string) ([]string, error) {
+	result := gjson.Get(ksPlayJson, "adaptationSet.0.representation.#.url")
+	if !result.Exists() {
+		return nil, fmt.Errorf("url not found")
+	}
+	if result.Type != gjson.JSON {
+		return nil, fmt.Errorf("url is not a json")
+	}
+
+	urls := make([]string, 0)
+	for _, url := range result.Array() {
+		urls = append(urls, url.String())
+	}
+
+	return urls, nil
+}
+
+func GetM3u8QualityLabels(ksPlayJson string) ([]string, error) {
+	result := gjson.Get(ksPlayJson, "adaptationSet.0.representation.#.qualityLabel")
+	if !result.Exists() {
+		return nil, fmt.Errorf("url not found")
+	}
+	if result.Type != gjson.JSON {
+		return nil, fmt.Errorf("url is not a json")
+	}
+
+	qualityLabels := make([]string, 0)
+	for _, url := range result.Array() {
+		qualityLabels = append(qualityLabels, url.String())
+	}
+
+	return qualityLabels, nil
 }
