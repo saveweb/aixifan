@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/saveweb/aixifan/pkg/extractor"
+	"github.com/saveweb/aixifan/pkg/utils"
 	"github.com/tidwall/gjson"
 )
 
@@ -19,7 +20,7 @@ func requestDouga(client *http.Client, acId string) ([]byte, error) {
 	}
 	url := "https://www.acfun.cn/v/ac" + acId + "?quickViewId=videoInfo_new&ajaxpipe=1"
 	req, err := http.NewRequest("GET", url, nil)
-	req.Header.Set("User-Agent", "aixifanfan/0.0.1")
+	req.Header.Set("User-Agent", "aixifanfan/"+utils.GetVersion().Version)
 
 	resp, err := client.Do(req)
 	if err != nil {

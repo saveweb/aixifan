@@ -12,10 +12,11 @@ import (
 	"github.com/saveweb/aixifan/pkg/api"
 	"github.com/saveweb/aixifan/pkg/extractor"
 	"github.com/saveweb/aixifan/pkg/ffmpeg"
+	"github.com/saveweb/aixifan/pkg/utils"
 )
 
 var headers = map[string]string{
-	"User-Agent": "aixifanfan/0.0.1",
+	"User-Agent": "aixifanfan/" + utils.GetVersion().Version,
 }
 
 func validateDougaId(dougaId string) bool {
