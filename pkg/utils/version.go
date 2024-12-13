@@ -48,7 +48,7 @@ func GetLatestTags() (tags []GitTag, err error) {
 	} {
 		var resp *http.Response
 		req, _ := http.NewRequest("GET", url, nil)
-		req.Header.Set("User-Agent", "aixifan/"+GetVersion().Version)
+		req.Header.Set("User-Agent", GetUA())
 		resp, err = client.Do(req)
 		if err != nil {
 			slog.Error(err.Error(), "url", url)

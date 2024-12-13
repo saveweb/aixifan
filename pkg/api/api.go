@@ -20,7 +20,7 @@ func requestDouga(client *http.Client, acId string) ([]byte, error) {
 	}
 	url := "https://www.acfun.cn/v/ac" + acId + "?quickViewId=videoInfo_new&ajaxpipe=1"
 	req, err := http.NewRequest("GET", url, nil)
-	req.Header.Set("User-Agent", "aixifanfan/"+utils.GetVersion().Version)
+	req.Header.Set("User-Agent", utils.GetUA())
 
 	resp, err := client.Do(req)
 	if err != nil {

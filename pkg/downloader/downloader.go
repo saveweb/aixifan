@@ -16,7 +16,7 @@ import (
 )
 
 var headers = map[string]string{
-	"User-Agent": "aixifanfan/" + utils.GetVersion().Version,
+	"User-Agent": utils.GetUA(),
 }
 
 func validateDougaId(dougaId string) bool {
