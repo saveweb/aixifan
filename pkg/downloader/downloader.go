@@ -46,6 +46,32 @@ func SaveDougaInfos(dougaDir, dougaId string, parts []string) error {
 	return nil
 }
 
+// Cleanup hlsdl tmp files
+func Cleanup(dougaDir string) error {
+	infos, err := os.ReadDir(dougaDir)
+	if err != nil {
+		return err
+	}
+	for _, info := range infos {
+		if info.IsDir() {
+			allDigits := true
+			for _, c := range info.Name() {
+				if c < '0' || c > '9' {
+					allDigits = false
+					break
+				}
+			}
+			if allDigits {
+				slog.Info("Removing cache", "dir", info.Name())
+				if err := os.RemoveAll(path.Join(dougaDir, info.Name())); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	return nil
+}
+
 func DownloadVideo(dougaDir, acid, part string) error {
 	dougaTitle, partTitle, err := extractor.GetTitles(part)
 	if err != nil {
@@ -130,5 +156,5 @@ func Download(downloadsHomeDir string, dougaId string) error {
 			return err
 		}
 	}
-	return nil
+	return Cleanup(dougaDir)
 }

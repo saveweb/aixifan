@@ -6,7 +6,7 @@
     - [x] Saving video info
     - [x] m3u8 Downloader
     - [x] ffmpeg convert ts to mp4 (?)
-    - [ ] Clean up hlsdl tmp files
+    - [x] Clean up hlsdl tmp files
 - [ ] Uploader
     - [ ] mapping IA S3 protocol
     - [ ] modify metadata
