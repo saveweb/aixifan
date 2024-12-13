@@ -8,6 +8,7 @@
     - [x] ffmpeg convert ts to mp4 (?)
     - [x] Clean up hlsdl tmp files
 - [ ] Uploader
+    - [x] Check if item exists
     - [ ] mapping IA S3 protocol
     - [ ] modify metadata
 - [x] Version check
