@@ -24,6 +24,7 @@ e.g. aixifan down 32749`)
 }
 
 func main() {
+	flag.Usage = help
 	flag.Parse()
 	if flag.NArg() < 2 {
 		help()
