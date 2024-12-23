@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/saveweb/aixifan/pkg/downloader"
+	"github.com/saveweb/aixifan/pkg/uploader"
 	"github.com/saveweb/aixifan/pkg/utils"
 )
 
@@ -32,6 +33,8 @@ func main() {
 	downSkipIACheck := downCmd.Bool("s", false, "Do not check if the item already exists on IA")
 
 	upCmd := flag.NewFlagSet("up", flag.ExitOnError)
+	upDougaId := upCmd.String("i", "", "Douga ID (int-string, NOT contain 'ac' or '_')")
+	upDelete := upCmd.Bool("d", false, "Delete the dougaDir after uploading successfully")
 
 	versionCmd := flag.NewFlagSet("version", flag.ExitOnError)
 
@@ -43,10 +46,10 @@ func main() {
 	switch os.Args[1] {
 	case "down":
 		downCmd.Parse(os.Args[2:])
-		os.Exit(downloader.Main(downCmd, downNoVersionCheck, downDougaId, downSkipIACheck))
+		os.Exit(downloader.Main(downCmd, *downNoVersionCheck, *downDougaId, *downSkipIACheck))
 	case "up":
 		upCmd.Parse(os.Args[2:])
-		panic("not implemented")
+		os.Exit(uploader.Main(upCmd, *upDougaId, *upDelete))
 	case "version":
 		versionCmd.Parse(os.Args[2:])
 		fmt.Println(utils.GetVersion().Version)

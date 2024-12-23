@@ -8,8 +8,12 @@ import (
 	"github.com/saveweb/aixifan/pkg/utils"
 )
 
-func Main(downCmd *flag.FlagSet, downNoVersionCheck *bool, downDougaId *string, downSkipIACheck *bool) int {
-	dougaId := *downDougaId
+func Main(downCmd *flag.FlagSet, downNoVersionCheck bool, downDougaId string, downSkipIACheck bool) int {
+	dougaId := downDougaId
+	if dougaId == "" {
+		downCmd.Usage()
+		return 2
+	}
 
 	// check new version
 	newVersionChan := make(chan bool, 1)
@@ -24,7 +28,7 @@ func Main(downCmd *flag.FlagSet, downNoVersionCheck *bool, downDougaId *string, 
 		}
 	}(newVersionChan)
 	defer close(newVersionChan)
-	if !*downNoVersionCheck {
+	if !downNoVersionCheck {
 		go func(ch chan bool) {
 			slog.Info("Checking new version...")
 			newVersion, err := utils.NewVersionAvailable()
@@ -42,7 +46,7 @@ func Main(downCmd *flag.FlagSet, downNoVersionCheck *bool, downDougaId *string, 
 	}
 
 	// Check IA Item (dedup)
-	if !*downSkipIACheck {
+	if !downSkipIACheck {
 		slog.Info("Checking IA item...")
 		identifier := utils.ToIdentifier(dougaId)
 		exists, err := utils.CheckIAItemExist(identifier)
@@ -58,11 +62,6 @@ func Main(downCmd *flag.FlagSet, downNoVersionCheck *bool, downDougaId *string, 
 	}
 
 	// download
-	if dougaId == "" {
-		downCmd.Usage()
-		return 2
-	}
-
 	config, err := config.LoadOrNewConfig()
 	if err != nil {
 		panic(err)

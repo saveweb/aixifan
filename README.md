@@ -7,9 +7,9 @@
     - [x] m3u8 Downloader
     - [x] ffmpeg convert ts to mp4 (?)
     - [x] Clean up hlsdl tmp files
-- [ ] Uploader
+    - [ ] itemimage
     - [x] Check if item exists
-    - [ ] mapping IA S3 protocol
+- [ ] Uploader
     - [ ] modify metadata
 - [x] Version check
 - [ ] CLI

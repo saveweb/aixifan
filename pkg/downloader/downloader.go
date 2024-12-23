@@ -2,8 +2,10 @@ package downloader
 
 import (
 	"fmt"
+	"io"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"os"
 	"path"
 	"time"
@@ -125,13 +127,52 @@ func DownloadVideo(dougaDir, acid, part string) error {
 	return nil
 }
 
+func DownloadCover(dougaDir, part string) error {
+	info, err := extractor.GetPartInfo(part)
+	if err != nil {
+		return err
+	}
+	urlParsed, err := url.Parse(info.CoverUrl)
+	ext := path.Ext(urlParsed.Path)
+	coverFilepath := path.Join(dougaDir, "douga"+info.DougaId+"_itemimage"+ext)
+	slog.Info("Downloading cover", "coverFilepath", coverFilepath, "coverUrl", info.CoverUrl)
+
+	client := &http.Client{
+		Timeout: 15 * time.Second,
+	}
+	req, _ := http.NewRequest("GET", info.CoverUrl, nil)
+	req.Header.Set("User-Agent", utils.GetUA())
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	if err := os.WriteFile(coverFilepath, body, 0644); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func Download(downloadsHomeDir string, dougaId string) error {
 	if !validateDougaId(dougaId) {
 		return fmt.Errorf("invalid dougaId")
 	}
 
-	client := &http.Client{Timeout: 15 * time.Second}
+	dougaDir := path.Join(downloadsHomeDir, dougaId)
+	if isAllDownloaded(dougaDir) {
+		slog.Info("Already downloaded", "dougaDir", dougaDir)
+		return nil
+	}
 
+	client := &http.Client{Timeout: 15 * time.Second}
 	parts, err := api.GetDougaAll(client, dougaId)
 	if err != nil {
 		return err
@@ -140,7 +181,6 @@ func Download(downloadsHomeDir string, dougaId string) error {
 		return fmt.Errorf("parts is empty")
 	}
 
-	dougaDir := path.Join(downloadsHomeDir, dougaId)
 	if err := os.MkdirAll(dougaDir, 0755); err != nil {
 		return err
 	}
@@ -151,11 +191,38 @@ func Download(downloadsHomeDir string, dougaId string) error {
 	}
 	slog.Info("DougaInfos saved", "dougaDir", dougaDir)
 
+	if err := DownloadCover(dougaDir, parts[0]); err != nil {
+		slog.Error("DownloadCover", "err", err)
+		return err
+	}
+	slog.Info("DownloadCover saved", "dougaDir", dougaDir)
+
 	for i, part := range parts {
 		acid := fmt.Sprintf("%s_%d", dougaId, i+1)
 		if err := DownloadVideo(dougaDir, acid, part); err != nil {
 			return err
 		}
 	}
+	if err := markAllDownloaded(dougaDir); err != nil {
+		return err
+	}
+
 	return Cleanup(dougaDir)
+}
+
+// check _alldownloaded.mark
+func isAllDownloaded(dougaDir string) bool {
+	// check if dougaDir/_alldownloaded.mark exists
+	_, err := os.Stat(path.Join(dougaDir, "_alldownloaded.mark"))
+	return err == nil
+}
+
+func markAllDownloaded(dougaDir string) error {
+	// create dougaDir/_alldownloaded.mark
+	f, err := os.Create(path.Join(dougaDir, "_alldownloaded.mark"))
+	if err != nil {
+		return fmt.Errorf("failed to create _alldownloaded.mark: %w", err)
+	}
+	defer f.Close()
+	return nil
 }

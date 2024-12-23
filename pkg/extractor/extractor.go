@@ -2,6 +2,7 @@ package extractor
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -90,6 +91,36 @@ func GetTitles(part string) (dougaTitle string, partTitle string, err error) {
 	partTitle = result.String()
 
 	return dougaTitle, partTitle, nil
+}
+
+type Tag struct {
+	Name string `json:"name"`
+	Id   string `json:"id"`
+}
+
+type CurrentVideoInfo struct {
+	Id        string `json:"id"` // video id (类似 B 站的 cid)
+	PartTitle string `json:"title"`
+}
+
+type PartInfo struct {
+	CoverUrl         string           `json:"coverUrl"` // 封面
+	DougaId          string           `json:"dougaId"`
+	DougaTitle       string           `json:"title"`
+	CurrentVideoInfo CurrentVideoInfo `json:"currentVideoInfo"`
+	Description      string           `json:"description"`
+	User             Tag              `json:"user"` // 共用 Tag，反正字段一致
+	TagList          []Tag            `json:"tagList"`
+	CreateTime       string           `json:"createTime"`
+}
+
+func GetPartInfo(part string) (PartInfo, error) {
+	var info PartInfo
+	err := json.Unmarshal([]byte(part), &info)
+	if err != nil {
+		return info, err
+	}
+	return info, nil
 }
 
 // part: video info json
