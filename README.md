@@ -7,18 +7,18 @@
     - [x] m3u8 Downloader
     - [x] ffmpeg convert ts to mp4 (?)
     - [x] Clean up hlsdl tmp files
-    - [ ] itemimage
+    - [x] itemimage
     - [x] Check if item exists
-- [ ] Uploader
+- [x] Uploader
     - [ ] modify metadata
 - [x] Version check
-- [ ] CLI
+- [x] CLI
     - [X] `aixifan_config.json` Config
         - [x] "downloads_home_dir"
-        - [ ] "ia_key_file"
+        - [x] "ia_key_file"
         - [ ] "cookies_file"
     - [x] Download
-    - [ ] IA S3 Upload
+    - [x] IA S3 Upload
 - [ ] Login/Cookies for higher quality
     - [ ] Login/Cookies
     - [ ] Remove sensitive info from saved json info

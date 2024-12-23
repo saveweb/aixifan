@@ -98,7 +98,7 @@ func Main(upCmd *flag.FlagSet, upDougaId string, upDelete bool) int {
 			"external-identifier": externalIdentifiers,
 			"subject":             subject,
 			"originalurl":         {fmt.Sprintf("https://www.acfun.cn/v/ac%s_%d", dougaId, partNum)},
-			"scanner":             {utils.GetUA()},
+			"scanner":             {"saveweb/" + utils.GetUA()},
 		}
 
 		slog.Info("Uploading", "identifier", identifier, "meta", meta)
@@ -127,5 +127,6 @@ func Main(upCmd *flag.FlagSet, upDougaId string, upDelete bool) int {
 		}
 		slog.Info("Deleted", "dougaDir", dougaDir)
 	}
-	return 1
+
+	return 0
 }
