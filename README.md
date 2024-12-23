@@ -1,5 +1,14 @@
 # Untitled Proj - 爱稀饭
 
+## Usage:
+
+```shell
+aixifan down -i <douga_id>
+aixifan up -i <douga_id>
+```
+
+---
+
 - [x] Extracting video info from html
     - [x] MultiPart
 - [x] Downloader
