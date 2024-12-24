@@ -1,12 +1,12 @@
 module github.com/saveweb/aixifan
 
-go 1.23.4
+go 1.23
 
 require (
 	github.com/canhlinh/hlsdl v0.0.0-20240124081241-e7eb3b498559
-	github.com/saveweb/go2internetarchive v0.1.3
+	github.com/saveweb/go2internetarchive v0.1.4
 	github.com/tidwall/gjson v1.18.0
-	golang.org/x/net v0.32.0
+	golang.org/x/net v0.33.0
 )
 
 require (

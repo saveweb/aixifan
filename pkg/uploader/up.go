@@ -114,8 +114,8 @@ func Main(upCmd *flag.FlagSet, upDougaId string, upDelete bool) int {
 	}
 
 	if upDelete {
+		fmt.Println()
 		for countdown := 5; countdown > 0; countdown-- {
-			fmt.Println()
 			fmt.Printf("\rDeleting in %d seconds... (Ctrl+C to cancel)", countdown)
 			time.Sleep(time.Second)
 		}
