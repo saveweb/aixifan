@@ -1,5 +1,10 @@
 # Untitled Proj - 爱稀饭
 
+<!-- aixifan_archiver_8x.png -->
+<div align=center><img width = "150" height ="150" src ="https://raw.githubusercontent.com/saveweb/aixifan/main/aixifan_archiver_8x.png"/></div>
+
+> _Image by [@gledos](https://github.com/gledos/)_
+
 ## Usage:
 
 ```shell
